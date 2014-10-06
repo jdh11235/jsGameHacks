@@ -19,3 +19,7 @@ a {
   background-color: white;
   padding: 0.5em;
 }
+
+.notice {
+  color: orange;
+}
