@@ -1,6 +1,10 @@
-var CookieGiveBox_proto = Object.create(HTMLInputElement.prototype);
+if( !jsGameHacks) {
+  var jsGameHacks = {};
+}
 
-CookieGiveBox_proto.createdCallback = function() {
+jsGameHacks.CookieGiveBox_proto = Object.create(HTMLInputElement.prototype);
+
+jsGameHacks.CookieGiveBox_proto.createdCallback = function() {
   var elm = this;
 
   elm.style.position = 'fixed';
@@ -49,9 +53,14 @@ CookieGiveBox_proto.createdCallback = function() {
   elm.addEventListener('keydown', keyHandler);
 };
 
-var CookieGiveBox = document.registerElement('hacks-cookiegivebox', {
-  prototype: CookieGiveBox_proto,
-  extends: 'input'
-});
+if ( !jsGameHacks.CookieGiveBox) {
+  jsGameHacks.CookieGiveBox = document.registerElement('hacks-cookiegivebox', {
+    prototype: jsGameHacks.CookieGiveBox_proto,
+    extends: 'input'
+  });
+}
 
-document.body.appendChild(new CookieGiveBox());
+if (jsGameHacks.activeElement) {
+  jsGameHacks.activeElement.remove();
+}
+jsGameHacks.activeElement = document.body.appendChild(new jsGameHacks.CookieGiveBox());
