@@ -1,0 +1,25 @@
+
+body {
+  text-align: center;
+  font-family: sans-serif;
+  background-color: black;
+  color: green;
+}
+
+a {
+  color: #008b8b;
+}
+
+
+
+h1 span {
+  color: black;
+}
+
+
+
+h1 {
+  display: block;
+  background-color: white;
+  padding: 0.5em;
+}
