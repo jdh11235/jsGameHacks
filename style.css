@@ -6,18 +6,18 @@ body {
   color: green;
 }
 
-a {
-  color: #008b8b;
-}
-
-#header span {
-  color: black;
-}
-
 #header {
   display: block;
   background-color: white;
   padding: 0.5em;
+}
+
+#header span {
+  color: #6d6d6d;
+}
+
+#header a {
+  color: black;
 }
 
 .notice {
