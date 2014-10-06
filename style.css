@@ -10,15 +10,11 @@ a {
   color: #008b8b;
 }
 
-
-
-h1 span {
+#header span {
   color: black;
 }
 
-
-
-h1 {
+#header {
   display: block;
   background-color: white;
   padding: 0.5em;
