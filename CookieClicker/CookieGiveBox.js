@@ -1,6 +1,6 @@
-var CookieGiveBoxProto = Object.create(HTMLInputElement.prototype);
+var CookieGiveBox_proto = Object.create(HTMLInputElement.prototype);
 
-CookieGiveBoxProto.createdCallback = function() {
+CookieGiveBox_proto.createdCallback = function() {
   var elm = this;
 
   elm.style.position = 'fixed';
@@ -50,7 +50,7 @@ CookieGiveBoxProto.createdCallback = function() {
 };
 
 var CookieGiveBox = document.registerElement('hacks-cookiegivebox', {
-  prototype: CookieGiveBoxProto,
+  prototype: CookieGiveBox_proto,
   extends: 'input'
 });
 
