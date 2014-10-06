@@ -14,6 +14,7 @@ CookieGiveBoxProto.createdCallback = function() {
 
   function enter() {
     var n = +elm.value;
+
     function isValid(n) {
       if ( !isNaN(n) ) {
         return true;
@@ -36,10 +37,10 @@ CookieGiveBoxProto.createdCallback = function() {
 
   function keyHandler(event) {
     var key = event.keyCode;
+
     if (key == 13) { //enter
       enter();
     }
-
     if (key == 8 || key == 46) { //backspace or delete
       reset();
     }
