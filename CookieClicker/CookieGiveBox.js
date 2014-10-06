@@ -63,4 +63,5 @@ if ( !jsGameHacks.CookieGiveBox) {
 if (jsGameHacks.activeElement) {
   jsGameHacks.activeElement.remove();
 }
+
 jsGameHacks.activeElement = document.body.appendChild(new jsGameHacks.CookieGiveBox());
