@@ -1,7 +1,7 @@
 var util = {
-  fetchTextFile: function(path) {
+  fetchTextFile: function(url) {
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open("GET", path, false);
+    xmlhttp.open("GET", url, false);
     xmlhttp.send();
     return xmlhttp.responseText;
   },
