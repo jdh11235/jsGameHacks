@@ -1,23 +1,25 @@
-if( !jsGameHacks) {
+/* global document */
+/* global Game */
+
+if (!jsGameHacks) {
   var jsGameHacks = {};
 }
 
-jsGameHacks.CookieGiveBox_proto = Object.create(HTMLInputElement.prototype);
+(function(){
 
-jsGameHacks.CookieGiveBox_proto.createdCallback = function() {
-  var elm = this;
+  var box = document.createElement('input');
 
-  elm.style.position = 'fixed';
-  elm.style.bottom = '0em';
-  elm.style.right = '0em';
-  elm.style.backgroundColor = 'white';
+  box.style.position = 'fixed';
+  box.style.bottom = '0em';
+  box.style.right = '0em';
+  box.style.backgroundColor = 'white';
 
   function status(color) {
-    elm.style.backgroundColor = color;
+    box.style.backgroundColor = color;
   }
 
   function enter() {
-    var n = +elm.value;
+    var n = +box.value;
 
     function isValid(n) {
       if ( !isNaN(n) ) {
@@ -32,8 +34,8 @@ jsGameHacks.CookieGiveBox_proto.createdCallback = function() {
       status('lime');
     } else {
       status('red');
-    }
   }
+    }
 
   function reset() {
     status('white');
@@ -50,18 +52,13 @@ jsGameHacks.CookieGiveBox_proto.createdCallback = function() {
     }
   }
 
-  elm.addEventListener('keydown', keyHandler);
-};
+  box.addEventListener('keydown', keyHandler);
 
-if ( !jsGameHacks.CookieGiveBox) {
-  jsGameHacks.CookieGiveBox = document.registerElement('hacks-cookiegivebox', {
-    prototype: jsGameHacks.CookieGiveBox_proto,
-    extends: 'input'
-  });
-}
+  if (jsGameHacks.activeElement) {
+    jsGameHacks.activeElement.parentNode.removeChild(jsGameHacks.activeElement);
+  }
 
-if (jsGameHacks.activeElement) {
-  jsGameHacks.activeElement.remove();
-}
+  jsGameHacks.activeElement = document.body.appendChild(box);
 
-jsGameHacks.activeElement = document.body.appendChild(new jsGameHacks.CookieGiveBox());
+})();
+
