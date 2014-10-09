@@ -49,6 +49,7 @@ var util = {
 
     elm.addEventListener('click', function(event) {
       event.preventDefault();
+      console.log(elm.innerHTML + ' ' + elm.href);
     });
   },
 
