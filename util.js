@@ -43,7 +43,9 @@ var util = {
   convertToMarklet: function(elm) {
     var url = util.expandURL(elm.innerHTML);
     elm.href = util.makeAttacherMarklet(url);
-//    console.log(util.makeAttacherMarklet(url));
+    elm.addEventListener('click', function(event) {
+      event.preventDefault();
+    });
   },
 
   autoMarkletBoxes: function() {
