@@ -20,6 +20,10 @@ body {
   color: black;
 }
 
+#displays i {
+  color: #8a2be2; /* Blue Purple */
+}
+
 .notice {
   color: orange;
 }
@@ -30,4 +34,10 @@ a.marklet-box {
   color: white;
   float: right;
   padding: 0.5em;
+}
+
+#displays div {
+  background-color: white;
+  padding: 0.5em;
+  margin: 1.5em;
 }
