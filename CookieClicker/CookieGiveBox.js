@@ -48,8 +48,7 @@ if (!jsGameHacks) {
 
     if (key == 13) { //enter
       enter();
-    }
-    if (key == 8 || key == 46) { //backspace or delete
+    } else {
       reset();
     }
   }
