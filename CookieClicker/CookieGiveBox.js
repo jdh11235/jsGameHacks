@@ -61,6 +61,7 @@ if (!jsGameHacks) {
   }
 
   jsGameHacks.activeElement = document.body.appendChild(box);
+  box.focus();
 
 })();
 
