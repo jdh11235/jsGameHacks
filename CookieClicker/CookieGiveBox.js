@@ -36,8 +36,8 @@ if (!jsGameHacks) {
       status('lime');
     } else {
       status('red');
-  }
     }
+  }
 
   function reset() {
     status('white');
