@@ -32,7 +32,6 @@ var util = {
     var marklet_pre = prefix + fn + suffix;
     var marklet = util.cleanWhitespace(marklet_pre);
 
-    console.log(marklet);
     return(marklet);
   },
 
@@ -43,6 +42,11 @@ var util = {
   convertToMarklet: function(elm) {
     var url = util.expandURL(elm.innerHTML);
     elm.href = util.makeAttacherMarklet(url);
+
+    if (localStorage.urlBase == util.url.local) {
+      elm.innerHTML = '*' + elm.innerHTML;
+    }
+
     elm.addEventListener('click', function(event) {
       event.preventDefault();
     });
@@ -73,12 +77,16 @@ var util = {
     } else if (localStorage.urlBase == util.url.local) {
       localStorage.urlBase = util.url.remote;
     }
-    util.init();
+
+    util.checkSrc();
+    util.autoMarkletBoxes();
   },
 
   init: function() {
     util.checkSrc();
     util.autoMarkletBoxes();
+
+    console.log('To switch marklet sources, util.switchSrc()');
   }
 
 };
