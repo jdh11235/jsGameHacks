@@ -13,7 +13,7 @@ body {
 }
 
 #header span {
-  color: #6d6d6d;
+  color: #6d6d6d; /* Stone Grey */
 }
 
 #header a {
@@ -22,4 +22,12 @@ body {
 
 .notice {
   color: orange;
+}
+
+a.marklet-box {
+  display: block;
+  background-color: #8a2be2; /* Blue Purple */
+  color: white;
+  float: right;
+  padding: 0.5em;
 }
