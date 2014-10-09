@@ -1,6 +1,6 @@
 jsGameHacks
 ===========
 
-Fun mods for HTML5 games.
+mods/hacks/improvements for HTML5/JavaScript games.
 
 [git.io/jsgamehacks](http://git.io/jsgamehacks)
