@@ -45,6 +45,8 @@ var util = {
 
     if (localStorage.urlBase == util.url.local) {
       elm.innerHTML = '*' + elm.innerHTML;
+    } else {
+      elm.innerHTML = elm.innerHTML.replace(/\*/g, '');
     }
 
     elm.addEventListener('click', function(event) {
@@ -87,7 +89,7 @@ var util = {
     util.checkSrc();
     util.autoMarkletBoxes();
 
-    console.log('To switch marklet sources, util.switchSrc()');
+    console.log('To enable local marklet sources, util.switchSrc()');
   }
 
 };
