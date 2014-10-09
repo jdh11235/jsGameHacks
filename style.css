@@ -41,3 +41,11 @@ a.marklet-box {
   padding: 0.5em;
   margin: 1.5em;
 }
+
+.category {
+  color: white;
+}
+
+.category a {
+  color: green;
+}
