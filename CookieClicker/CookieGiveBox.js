@@ -10,9 +10,11 @@ if (!jsGameHacks) {
   var box = document.createElement('input');
 
   box.style.position = 'fixed';
+  box.style.zIndex = '1000';
   box.style.bottom = '0em';
   box.style.right = '0em';
   box.style.backgroundColor = 'white';
+  box.placeholder = 'CookieGiveBox';
 
   function status(color) {
     box.style.backgroundColor = color;
