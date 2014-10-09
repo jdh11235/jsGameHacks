@@ -1,9 +1,15 @@
 /* global document */
 /* global window */
+/* global localStorage */
 /* global XMLHttpRequest */
 /* jshint -W107 */
 
 var util = {
+
+  url: {
+    remote: 'http://jdh11235.github.io/jsGameHacks/',
+    local: 'http://localhost:8000/'
+  },
 
   cleanWhitespace: function(text) {
     return text.replace(/[\040\n]/gi, '%20');
@@ -31,7 +37,7 @@ var util = {
   },
 
   expandURL: function(url) {
-    return 'http://jdh11235.github.io/jsGameHacks/' + url + '.js';
+    return localStorage.urlBase + url + '.js';
   },
 
   convertToMarklet: function(elm) {
@@ -47,7 +53,29 @@ var util = {
     }
   },
 
+  checkSrc: function() {
+    var statusBox = document.getElementById('srcStatus');
+
+    if (!localStorage.urlBase) {
+      localStorage.urlBase = util.url.remote;
+    } else if (localStorage.urlBase == util.url.local) {
+       statusBox.innerHTML = 'local';
+    } else if (localStorage.urlBase == util.url.remote) {
+      statusBox.innerHTML = '';
+    }
+  },
+
+  switchSrc: function() {
+    if (localStorage.urlBase == util.url.remote) {
+      localStorage.urlBase = util.url.local;
+    } else if (localStorage.urlBase == util.url.local) {
+      localStorage.urlBase = util.url.remote;
+    }
+    util.init();
+  },
+
   init: function() {
+    util.checkSrc();
     util.autoMarkletBoxes();
   }
 
