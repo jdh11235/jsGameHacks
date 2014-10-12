@@ -50,8 +50,9 @@ body {
   color: green;
 }
 
-i.installation {
-  color: white;
+.install {
+  color: lightgrey;
+  font-weight: bold;
 }
 
 h2 {
@@ -59,5 +60,5 @@ h2 {
 }
 
 .notice a {
-  color: white;
+  color: lightgrey;
 }

@@ -123,11 +123,11 @@ var util = {
       texts[i].style.display = 'none';
     }
 
-    var installButton = document.getElementById('installation-button');
-    var installDesktop = document.getElementById('installation-desktop');
-    var installMobile = document.getElementById('installation-mobile');
+    var installButton = document.getElementById('install-button');
+    var installDesktop = document.getElementById('install-desktop');
+    var installMobile = document.getElementById('install-mobile');
 
-    installButton.innerHTML = 'Installation Mode: Desktop';
+    installButton.innerHTML = 'Install Mode: Desktop';
     installDesktop.style.display = '';
     installMobile.style.display = 'none';
   },
@@ -145,11 +145,11 @@ var util = {
       buttons[i].style.display = 'none';
     }
 
-    var installButton = document.getElementById('installation-button');
-    var installMobile = document.getElementById('installation-mobile');
-    var installDesktop = document.getElementById('installation-desktop');
+    var installButton = document.getElementById('install-button');
+    var installMobile = document.getElementById('install-mobile');
+    var installDesktop = document.getElementById('install-desktop');
 
-    installButton.innerHTML = 'Installation Mode: Mobile';
+    installButton.innerHTML = 'Install Mode: Mobile';
     installMobile.style.display = '';
     installDesktop.style.display = 'none';
   },
