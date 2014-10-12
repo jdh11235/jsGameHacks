@@ -3,7 +3,7 @@ body {
   text-align: center;
   font-family: sans-serif;
   background-color: black;
-  color: green;
+  color: white;
 }
 
 #header {
@@ -28,7 +28,7 @@ body {
   color: orange;
 }
 
-a.marklet-box {
+.marklet-button, .marklet-text {
   display: block;
   background-color: #8a2be2; /* Blue Purple */
   color: white;
@@ -47,5 +47,19 @@ a.marklet-box {
 }
 
 .category a {
+  color: green;
+}
+
+i.installation {
+  color: white;
+}
+
+button.installation {
+  color: black;
+  font-weight: bold;
+  background-color: orange;
+}
+
+h2 {
   color: green;
 }

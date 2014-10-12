@@ -23,7 +23,15 @@
 
   <h2>mods/hacks/improvements for HTML5/JavaScript games</h2>
 
-  <p class="notice">The following buttons contain scripts that will change a game in some way.&nbsp; To use them, drag them to your bookmarks bar, then click them while playing that game.</p>
+  <p class="notice">The following scripts each change various games in some way.</p>
+
+  <button id="installation-button" class="installation" onclick="util.toggleInstall()">Installation Mode: Desktop</button>
+  <p>
+    <i class="installation" id="installation-desktop">To install a script: drag its button to your bookmarks bar.</i>
+  </p>
+  <i class="installation" id="installation-mobile" style="display:none">To install a script: copy its code, create any bookmark for a placeholder, edit the bookmark, and replace the bookmark's URL with that code.</i>
+
+  <p class="notice">To run a script, click that bookmark while playing the game that it modifies.</p>
   <hr>
 
   <div id="displays">
@@ -33,7 +41,7 @@
 
     <div>
       <i>Enter amount into box, get cookies.</i>
-      <a class="marklet-box">CookieClicker/CookieGiveBox</a>
+      <a class="marklet-button">CookieClicker/CookieGiveBox</a>
     </div>
 
   </div>

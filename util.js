@@ -12,7 +12,7 @@ var util = {
   },
 
   cleanWhitespace: function(text) {
-    return text.replace(/[\040\n]/gi, '%20');
+    return text.replace(/[\040\n]/g, '%20');
   },
 
   fetchTextFile: function(url) {
@@ -39,39 +39,64 @@ var util = {
     return localStorage.urlBase + url + '.js';
   },
 
-  convertToMarklet: function(elm) {
-    var url = util.expandURL(elm.innerHTML);
-    elm.href = util.makeAttacherMarklet(url);
+  activateButtons: function(button) {
+    var url = util.expandURL(button.innerHTML);
+    var marklet = util.makeAttacherMarklet(url);
 
-    if (localStorage.urlBase == util.url.local) {
-      elm.innerHTML = '*' + elm.innerHTML;
-    } else {
-      elm.innerHTML = elm.innerHTML.replace(/\*/g, '');
-    }
+    button.href = marklet;
 
-    elm.addEventListener('click', function(event) {
+    button.addEventListener('click', function(event) {
       event.preventDefault();
-      console.log(elm.innerHTML + ' ' + elm.href);
-//      document.location.assign(elm.href);
     });
   },
 
-  autoMarkletBoxes: function() {
-    var containers = document.getElementsByClassName('marklet-box');
-    for (var i = 0; i < containers.length; i++) {
-      util.convertToMarklet(containers[i]);
+  activateTexts: function(button) {
+    var url = util.expandURL(button.innerHTML);
+    var marklet = util.makeAttacherMarklet(url);
+
+    var text = document.createElement('textarea');
+    text.className = 'marklet-text';
+    text.style.display = 'none';
+    text.innerHTML = marklet;
+    button.parentNode.insertBefore(text, button);
+  },
+
+  generateMarkletBoxes: function() {
+    var buttons = document.getElementsByClassName('marklet-button');
+
+    var i;
+    for (i = 0; i < buttons.length; i++) {
+      util.activateTexts(buttons[i]);
+      util.activateButtons(buttons[i]);
     }
   },
 
-  checkSrc: function() {
+  updateSrc: function() {
     var statusBox = document.getElementById('srcStatus');
+    var buttons = document.getElementsByClassName('marklet-button');
+    var texts = document.getElementsByClassName('marklet-text');
 
-    if (!localStorage.urlBase) {
-      localStorage.urlBase = util.url.remote;
-    } else if (localStorage.urlBase == util.url.local) {
-       statusBox.innerHTML = 'local';
+    var i, url, marklet;
+    if (localStorage.urlBase == util.url.local) {
+      statusBox.innerHTML = 'local';
+
+      for (i = 0; i < buttons.length; i++) {
+        url = util.expandURL(buttons[i].innerHTML);
+        marklet = util.makeAttacherMarklet(url);
+        texts[i].innerHTML = marklet;
+        buttons[i].href = marklet;
+        buttons[i].innerHTML = '*' + buttons[i].innerHTML;
+      }
     } else if (localStorage.urlBase == util.url.remote) {
       statusBox.innerHTML = '';
+
+      for (i = 0; i < buttons.length; i++) {
+        buttons[i].innerHTML = buttons[i].innerHTML.replace(/\*/g, '');
+        url = util.expandURL(buttons[i].innerHTML);
+        marklet = util.makeAttacherMarklet(url);
+        buttons[i].href = marklet;
+        texts[i].innerHTML = marklet;
+      }
     }
   },
 
@@ -82,15 +107,90 @@ var util = {
       localStorage.urlBase = util.url.remote;
     }
 
-    util.checkSrc();
-    util.autoMarkletBoxes();
+    util.regenBoxes();
+  },
+
+  revealDesktop: function() {
+    var buttons = document.getElementsByClassName('marklet-button');
+    var texts = document.getElementsByClassName('marklet-text');
+
+    var i;
+    for (i = 0; i < buttons.length; i++) {
+      buttons[i].style.display = '';
+    }
+
+    for (i = 0; i < texts.length; i++) {
+      texts[i].style.display = 'none';
+    }
+
+    var installButton = document.getElementById('installation-button');
+    var installDesktop = document.getElementById('installation-desktop');
+    var installMobile = document.getElementById('installation-mobile');
+
+    installButton.innerHTML = 'Installation Mode: Desktop';
+    installDesktop.style.display = '';
+    installMobile.style.display = 'none';
+  },
+
+  revealMobile: function() {
+    var texts = document.getElementsByClassName('marklet-text');
+    var buttons = document.getElementsByClassName('marklet-button');
+
+    var i;
+    for (i = 0; i < texts.length; i++) {
+      texts[i].style.display = '';
+    }
+
+    for (i = 0; i < buttons.length; i++) {
+      buttons[i].style.display = 'none';
+    }
+
+    var installButton = document.getElementById('installation-button');
+    var installMobile = document.getElementById('installation-mobile');
+    var installDesktop = document.getElementById('installation-desktop');
+
+    installButton.innerHTML = 'Installation Mode: Mobile';
+    installMobile.style.display = '';
+    installDesktop.style.display = 'none';
+  },
+
+  updateInstall: function() {
+    if (localStorage.install == 'desktop') {
+      util.revealDesktop();
+    } else if (localStorage.install == 'mobile') {
+      util.revealMobile();
+    }
+  },
+
+  toggleInstall: function() {
+    if (localStorage.install == 'desktop') {
+      localStorage.install = 'mobile';
+    } else if (localStorage.install == 'mobile') {
+      localStorage.install = 'desktop';
+    }
+
+    util.updateInstall();
+  },
+
+  cleanLocalStorage: function() {
+    if (localStorage.install != 'desktop' && localStorage.install != 'mobile') {
+      localStorage.install = 'desktop';
+    }
+    if (localStorage.urlBase != util.url.remote && localStorage.urlBase != util.url.local) {
+      localStorage.urlBase = util.url.remote;
+    }
+  },
+
+  regenBoxes: function() {
+    util.updateSrc();
+    util.updateInstall();
   },
 
   init: function() {
-    util.checkSrc();
-    util.autoMarkletBoxes();
-
-    console.log('To enable local marklet sources, util.switchSrc()');
+    util.cleanLocalStorage();
+    util.generateMarkletBoxes();
+    util.regenBoxes();
+    console.log('To enable local marklet sources: util.switchSrc()');
   }
 
 };
