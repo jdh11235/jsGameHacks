@@ -57,3 +57,7 @@ i.installation {
 h2 {
   color: green;
 }
+
+.notice a {
+  color: white;
+}
