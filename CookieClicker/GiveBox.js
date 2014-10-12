@@ -14,7 +14,7 @@ if (!jsGameHacks) {
   box.style.bottom = '0em';
   box.style.right = '0em';
   box.style.backgroundColor = 'white';
-  box.placeholder = 'CookieGiveBox';
+  box.placeholder = 'GiveBox';
 
   function status(color) {
     box.style.backgroundColor = color;
