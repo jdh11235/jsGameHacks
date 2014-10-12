@@ -78,7 +78,7 @@ var util = {
 
     var i, url, marklet;
     if (localStorage.urlBase == util.url.local) {
-      statusBox.innerHTML = 'local';
+      statusBox.innerHTML = '*Local';
 
       for (i = 0; i < buttons.length; i++) {
         url = util.expandURL(buttons[i].innerHTML);
