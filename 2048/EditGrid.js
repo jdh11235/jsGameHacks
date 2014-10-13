@@ -26,8 +26,65 @@ if (!jsGameHacks.EditGrid) {
         return elm;
       },
 
+      actionBar_container: function() {
+        var elm = document.createElement('div');
+
+        elm.style.position = 'fixed';
+        elm.style.width = '100%';
+        elm.style.height = '2em';
+        elm.style.left = '0%';
+        elm.style.bottom = '0%';
+        elm.style.zIndex = '100';
+
+        return elm;
+      },
+
+      actionBar_apply: function() {
+        var elm = document.createElement('p');
+
+        elm.innerHTML = 'Apply';
+        elm.style.textAlign = 'center';
+        elm.style.display = 'block';
+        elm.style.cursor = 'pointer';
+        elm.style.width = '61.8%';
+        elm.style.height = '100%';
+        elm.style.backgroundColor = '#f65e3b';
+        elm.style.color = '#faf8ef';
+        elm.style.float = 'left';
+
+        elm.addEventListener('click', jsGameHacks.EditGrid.apply);
+
+        return elm;
+      },
+
+      actionBar_cancel: function() {
+        var elm = document.createElement('p');
+
+        elm.innerHTML = 'Cancel';
+        elm.style.textAlign = 'center';
+        elm.style.display = 'block';
+        elm.style.cursor = 'pointer';
+        elm.style.width = '38.2%';
+        elm.style.height = '100%';
+        elm.style.backgroundColor = 'black';
+        elm.style.color = '#faf8ef';
+        elm.style.float = 'left';
+
+        elm.addEventListener('click', jsGameHacks.EditGrid.cancel);
+
+        return elm;
+      },
+
       actionBar: function() {
-        //similar to the upload bar of ImportSave
+        var container = new jsGameHacks.EditGrid.elm.actionBar_container();
+        var apply = new jsGameHacks.EditGrid.elm.actionBar_apply();
+        var cancel = new jsGameHacks.EditGrid.elm.actionBar_cancel();
+
+        document.body.appendChild(container);
+        container.appendChild(apply);
+        container.appendChild(cancel);
+
+        return container;
       }
     },
 
@@ -108,13 +165,12 @@ if (!jsGameHacks.EditGrid) {
     },
 
     attachActionBar: function() {
-      var actionBar = new jsGameHacks.EditGrid.elm.actionBar();
-      document.body.appendChild(actionBar);
+      new jsGameHacks.EditGrid.elm.actionBar();
     },
 
     open: function() {
       this.attachInputs();
-//      this.attachActionBar();
+      this.attachActionBar();
     },
 
     apply: function() {
