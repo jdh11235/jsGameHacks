@@ -36,7 +36,7 @@ if (!jsGameHacks.EditGrid) {
         elm.style.width = '100%';
         elm.style.height = '2em';
         elm.style.left = '0%';
-        elm.style.bottom = '0%';
+        elm.style.top = '0%';
         elm.style.zIndex = '100';
 
         return elm;
