@@ -1,5 +1,6 @@
 /* global document */
 /* global location */
+/* global setTimeout */
 
 if (!jsGameHacks) {
   var jsGameHacks = {};
@@ -15,13 +16,15 @@ if (!jsGameHacks.EditGrid) {
         elm.id = 'input' + x + y;
         elm.classList.add('tile');
         elm.classList.add('tile-position-' + x + '-' + y);
-        elm.addEventListener('keydown', jsGameHacks.EditGrid.keyHandler);
 
         var currentValue = jsGameHacks.EditGrid.getCurrentTileValue(x, y);
         if (currentValue) {
           elm.placeholder = currentValue;
           elm.value = currentValue;
         }
+
+        elm.addEventListener('keydown', jsGameHacks.EditGrid.keyHandler);
+        elm.addEventListener('paste', jsGameHacks.EditGrid.pasteHandler);
 
         return elm;
       },
@@ -103,6 +106,13 @@ if (!jsGameHacks.EditGrid) {
       return value;
     },
 
+    pasteHandler: function(e) {
+      function send() {
+        jsGameHacks.EditGrid.validate(e.target);
+      }
+      setTimeout(send, 1);
+    },
+
     keyHandler: function(e) {
 
       var key = e.keyCode;
@@ -134,6 +144,9 @@ if (!jsGameHacks.EditGrid) {
           moveTo(currentX + 1, currentY);
         }
       }
+      function send() {
+        jsGameHacks.EditGrid.validate(e.target);
+      }
 
       if (key == 37) { //left arrow
         e.preventDefault();
@@ -150,8 +163,13 @@ if (!jsGameHacks.EditGrid) {
       } else if (key == 27 || key == 9) { //esc or tab
         e.preventDefault();
       } else { //normal typing
-        //validate e.target contents, if NaN or !'', change e.target style, if good, remove style (similar to CookieClicker/GiveBox)
+        setTimeout(send, 1);
       }
+    },
+
+    validate: function(elm) {
+        //validate e.target contents, if NaN or !'', change e.target style, if good, remove style (similar to CookieClicker/GiveBox)
+        console.log(elm.value);
     },
 
     attachInputs: function() {
