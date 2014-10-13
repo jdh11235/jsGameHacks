@@ -25,7 +25,7 @@ body {
 }
 
 .notice {
-  color: orange;
+  color: lightgrey;
 }
 
 .marklet-button, .marklet-text {
@@ -43,7 +43,7 @@ body {
 }
 
 .category {
-  color: white;
+  color: orange;
 }
 
 .category a {
@@ -60,5 +60,9 @@ h2 {
 }
 
 .notice a {
-  color: lightgrey;
+  color: orange;
+}
+
+#header i {
+  color: #8a2be2; /* Blue Purple */
 }
