@@ -11,11 +11,13 @@ if (!jsGameHacks.EditGrid) {
     elm: {
       tileContainer: document.getElementsByClassName('tile-container')[0],
 
-      input: function(x, y) {
+      tileInput: function(x, y) {
         var elm = document.createElement('input');
-        elm.id = 'input' + x + y;
+        elm.id = 'tileInput' + x + y;
         elm.classList.add('tile');
         elm.classList.add('tile-position-' + x + '-' + y);
+
+        elm.style.cursor = 'text';
 
         var currentValue = jsGameHacks.EditGrid.getCurrentTileValue(x, y);
         if (currentValue) {
@@ -24,7 +26,8 @@ if (!jsGameHacks.EditGrid) {
         }
 
         elm.addEventListener('keydown', jsGameHacks.EditGrid.keyHandler);
-        elm.addEventListener('paste', jsGameHacks.EditGrid.pasteHandler);
+        elm.addEventListener('paste', jsGameHacks.EditGrid.editHandler);
+        elm.addEventListener('cut', jsGameHacks.EditGrid.editHandler);
 
         return elm;
       },
@@ -106,7 +109,7 @@ if (!jsGameHacks.EditGrid) {
       return value;
     },
 
-    pasteHandler: function(e) {
+    editHandler: function(e) {
       function send() {
         jsGameHacks.EditGrid.validate(e.target);
       }
@@ -121,7 +124,7 @@ if (!jsGameHacks.EditGrid) {
       var currentY = +currentID.substring(currentID.length - 1, currentID.length);
 
       function moveTo(x, y) {
-        var target = document.getElementById('input' + x + y);
+        var target = document.getElementById('tileInput' + x + y);
         target.focus();
       }
       function moveUp() {
@@ -144,9 +147,6 @@ if (!jsGameHacks.EditGrid) {
           moveTo(currentX + 1, currentY);
         }
       }
-      function send() {
-        jsGameHacks.EditGrid.validate(e.target);
-      }
 
       if (key == 37) { //left arrow
         e.preventDefault();
@@ -163,7 +163,7 @@ if (!jsGameHacks.EditGrid) {
       } else if (key == 27 || key == 9) { //esc or tab
         e.preventDefault();
       } else { //normal typing
-        setTimeout(send, 1);
+        jsGameHacks.EditGrid.editHandler(e);
       }
     },
 
@@ -176,8 +176,8 @@ if (!jsGameHacks.EditGrid) {
       var container = jsGameHacks.EditGrid.elm.tileContainer;
       for (var x = 1; x <= 4; x++) {
         for (var y = 1; y <= 4; y++) {
-          var input = new jsGameHacks.EditGrid.elm.input(x, y);
-          container.appendChild(input);
+          var tileInput = new jsGameHacks.EditGrid.elm.tileInput(x, y);
+          container.appendChild(tileInput);
         }
       }
     },
@@ -192,7 +192,7 @@ if (!jsGameHacks.EditGrid) {
     },
 
     apply: function() {
-      //collect data from inputs
+      //collect data from tileInputs
       //test data for !NaN
       //convert data to object in save format
       //localStorage.gameState = JSON.stringify(object);
