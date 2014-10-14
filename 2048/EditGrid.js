@@ -11,18 +11,18 @@ if (!jsGameHacks.EditGrid) {
     elm: {
       tileContainer: document.getElementsByClassName('tile-container')[0],
 
-      tileInput: function(x, y) {
+      tileInput: function (x, y) {
         var elm = document.createElement('input');
-        elm.id = 'tileInput' + x + y;
+        elm.id = 'tileInput-' + x + '-' + y;
         elm.classList.add('tile');
         elm.classList.add('tile-position-' + x + '-' + y);
 
         elm.style.cursor = 'text';
+        elm.style.textAlign = 'center';
 
         var currentValue = jsGameHacks.EditGrid.getCurrentTileValue(x, y);
         if (currentValue) {
           elm.placeholder = currentValue;
-          elm.value = currentValue;
         }
 
         elm.addEventListener('keydown', jsGameHacks.EditGrid.keyHandler);
@@ -32,7 +32,7 @@ if (!jsGameHacks.EditGrid) {
         return elm;
       },
 
-      actionBar_container: function() {
+      actionBar_container: function () {
         var elm = document.createElement('div');
 
         elm.style.position = 'fixed';
@@ -45,7 +45,7 @@ if (!jsGameHacks.EditGrid) {
         return elm;
       },
 
-      actionBar_apply: function() {
+      actionBar_apply: function () {
         var elm = document.createElement('p');
 
         elm.innerHTML = 'Apply';
@@ -63,7 +63,7 @@ if (!jsGameHacks.EditGrid) {
         return elm;
       },
 
-      actionBar_cancel: function() {
+      actionBar_cancel: function () {
         var elm = document.createElement('p');
 
         elm.innerHTML = 'Cancel';
@@ -81,7 +81,7 @@ if (!jsGameHacks.EditGrid) {
         return elm;
       },
 
-      actionBar: function() {
+      actionBar: function () {
         var container = new jsGameHacks.EditGrid.elm.actionBar_container();
         var apply = new jsGameHacks.EditGrid.elm.actionBar_apply();
         var cancel = new jsGameHacks.EditGrid.elm.actionBar_cancel();
@@ -94,7 +94,7 @@ if (!jsGameHacks.EditGrid) {
       }
     },
 
-    getCurrentTileValue: function(x, y) {
+    getCurrentTileValue: function (x, y) {
       var className = 'tile-position-' + x + '-' + y;
       var outer = document.getElementsByClassName(className)[0];
       var inner, value;
@@ -109,39 +109,43 @@ if (!jsGameHacks.EditGrid) {
       return value;
     },
 
-    editHandler: function(e) {
+    editHandler: function (e) {
       function send() {
-        jsGameHacks.EditGrid.validate(e.target);
+        jsGameHacks.EditGrid.validateElm(e.target);
       }
       setTimeout(send, 1);
     },
 
-    keyHandler: function(e) {
+    keyHandler: function (e) {
 
       var key = e.keyCode;
       var currentID = e.target.id;
-      var currentX = +currentID.substring(currentID.length - 2, currentID.length -1);
+      var currentX = +currentID.substring(currentID.length - 3, currentID.length - 2);
       var currentY = +currentID.substring(currentID.length - 1, currentID.length);
 
       function moveTo(x, y) {
-        var target = document.getElementById('tileInput' + x + y);
+        var target = document.getElementById('tileInput-' + x + '-' + y);
         target.focus();
       }
+
       function moveUp() {
         if (currentY != 1) { //far top of grid
           moveTo(currentX, currentY - 1);
         }
       }
+
       function moveDown() {
         if (currentY != 4) { //far bottom of grid
           moveTo(currentX, currentY + 1);
         }
       }
+
       function moveLeft() {
         if (currentX != 1) { //far left of grid
           moveTo(currentX - 1, currentY);
         }
       }
+
       function moveRight() {
         if (currentX != 4) { //far right of grid
           moveTo(currentX + 1, currentY);
@@ -167,12 +171,31 @@ if (!jsGameHacks.EditGrid) {
       }
     },
 
-    validate: function(elm) {
-        //validate e.target contents, if NaN or !'', change e.target style, if good, remove style (similar to CookieClicker/GiveBox)
-        console.log(elm.value);
+    setElmStatus: function(elm, color) {
+      elm.style.backgroundColor = color;
     },
 
-    attachInputs: function() {
+    validateElm: function(elm) {
+      var text = elm.value;
+      if (jsGameHacks.EditGrid.validate(text)) {
+        console.log('good');
+        jsGameHacks.EditGrid.setElmStatus(elm, '');
+      } else {
+        console.log('bad');
+        jsGameHacks.EditGrid.setElmStatus(elm, 'black');
+      }
+    },
+
+    validate: function (text) {
+      var num = +text;
+      if (!isNaN(num)) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+
+    attachInputs: function () {
       var container = jsGameHacks.EditGrid.elm.tileContainer;
       for (var x = 1; x <= 4; x++) {
         for (var y = 1; y <= 4; y++) {
@@ -182,24 +205,30 @@ if (!jsGameHacks.EditGrid) {
       }
     },
 
-    attachActionBar: function() {
+    attachActionBar: function () {
       new jsGameHacks.EditGrid.elm.actionBar();
     },
 
-    open: function() {
-      this.attachInputs();
-      this.attachActionBar();
+    gamePreventer: function () {
+      //redirect focus to the Edit Grid
     },
 
-    apply: function() {
+    open: function () {
+      this.attachInputs();
+      this.attachActionBar();
+      this.gamePreventer();
+    },
+
+    apply: function () {
       //collect data from tileInputs
-      //test data for !NaN
+      //if (validate data) else alert('Hey, ' + bad_data + ' is not a number!');
+      //if (data == '') insert null
       //convert data to object in save format
       //localStorage.gameState = JSON.stringify(object);
       location.reload();
     },
 
-    cancel: function() {
+    cancel: function () {
       location.reload();
     }
   };
