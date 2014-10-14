@@ -9,6 +9,40 @@ if (!jsGameHacks) {
 
 if (!jsGameHacks.EditMode) {
   jsGameHacks.EditMode = {
+    template: {
+      gameState: function() {
+        var obj = {
+          grid: {
+            size: 4,
+            cells: [
+              [null, null, null, null],
+              [null, null, null, null],
+              [null, null, null, null],
+              [null, null, null, null]
+            ]
+          },
+          score: 0,
+          over: false,
+          won: false,
+          keepPlaying: false
+        };
+
+        return obj;
+      },
+
+      gameStateTile: function(x, y, value) {
+        var obj = {
+          position: {
+            x: x,
+            y: y
+          },
+          value: value
+        };
+
+        return obj;
+      }
+    },
+
     elm: {
       tileContainer: document.getElementsByClassName('tile-container')[0],
 
@@ -27,7 +61,7 @@ if (!jsGameHacks.EditMode) {
         var elm = document.createElement('input');
         elm.id = 'inputTile-' + x + '-' + y;
         elm.classList.add('tile');
-        elm.classList.add('tile-position-' + x + '-' + y);
+        elm.classList.add('tile-position-' + (x + 1) + '-' + (y + 1) );
 
         elm.style.cursor = 'text';
         elm.style.textAlign = 'center';
@@ -112,7 +146,7 @@ if (!jsGameHacks.EditMode) {
     },
 
     getCurrentTileValue: function (x, y) {
-      var className = 'tile-position-' + x + '-' + y;
+      var className = 'tile-position-' + (x + 1) + '-' + (y + 1);
       var outer = document.getElementsByClassName(className)[0];
       var inner, value;
 
@@ -146,25 +180,25 @@ if (!jsGameHacks.EditMode) {
       }
 
       function moveUp() {
-        if (currentY != 1) { //far top of grid
+        if (currentY !== 0) { //far top of grid
           moveTo(currentX, currentY - 1);
         }
       }
 
       function moveDown() {
-        if (currentY != 4) { //far bottom of grid
+        if (currentY != 3) { //far bottom of grid
           moveTo(currentX, currentY + 1);
         }
       }
 
       function moveLeft() {
-        if (currentX != 1) { //far left of grid
+        if (currentX !== 0) { //far left of grid
           moveTo(currentX - 1, currentY);
         }
       }
 
       function moveRight() {
-        if (currentX != 4) { //far right of grid
+        if (currentX != 3) { //far right of grid
           moveTo(currentX + 1, currentY);
         }
       }
@@ -213,16 +247,18 @@ if (!jsGameHacks.EditMode) {
     },
 
     collectData: function() {
-      var data = {};
+      var data = [
+        [], [], [], []
+      ];
 
-      for (var x = 1; x <= 4; x++) {
-        for (var y = 1; y <= 4; y++) {
+      for (var x = 0; x <= 3; x++) {
+        for (var y = 0; y <= 3; y++) {
           var inputTile = new jsGameHacks.EditMode.getInputTile(x, y);
 
           if (!inputTile.value && inputTile.placeholder) {
-            data[x + '_' + y] = inputTile.placeholder;
+            data[x][y] = inputTile.placeholder;
           } else {
-            data[x + '_' + y] = inputTile.value;
+            data[x][y] = inputTile.value;
           }
 
         }
@@ -237,7 +273,7 @@ if (!jsGameHacks.EditMode) {
       var isInputTile = /inputTile-\d-\d/g.test(e.target.id);
 
       if ( !(isInputTile || isInsideActionBar) ) {
-        jsGameHacks.EditMode.getInputTile(1, 1).focus();
+        jsGameHacks.EditMode.getInputTile(0, 0).focus();
       }
     },
 
@@ -251,8 +287,8 @@ if (!jsGameHacks.EditMode) {
 
     attachInputs: function () {
       var container = jsGameHacks.EditMode.elm.tileContainer;
-      for (var x = 1; x <= 4; x++) {
-        for (var y = 1; y <= 4; y++) {
+      for (var x = 0; x <= 3; x++) {
+        for (var y = 0; y <= 3; y++) {
           var inputTile = new jsGameHacks.EditMode.elm.inputTile(x, y);
           container.appendChild(inputTile);
         }
@@ -273,7 +309,7 @@ if (!jsGameHacks.EditMode) {
       window.addEventListener('keydown', jsGameHacks.EditMode.checkMessyKeypress);
       window.addEventListener('click', jsGameHacks.EditMode.checkMessyClick);
       this.disableNewGameButton();
-      this.getInputTile(1, 1).focus();
+      this.getInputTile(0, 0).focus();
     },
 
     init: function () {
@@ -284,13 +320,33 @@ if (!jsGameHacks.EditMode) {
 
     apply: function () {
       var data = jsGameHacks.EditMode.collectData();
-      console.log(data);
-      //trim whitespace from data
-      //if (validate data) else alert('Hey, ' + bad_data + ' is not a number!');
-      //if (data == '') insert null
-      //convert data to object in save format
-      //localStorage.gameState = JSON.stringify(object);
-//      location.reload();
+      var gameState = new jsGameHacks.EditMode.template.gameState();
+      var save = gameState.grid.cells;
+      var ok = true;
+
+      for (var x = 0; x <= 3; x++) {
+        for (var y = 0; y <= 3; y++) {
+          if (jsGameHacks.EditMode.validate(data[x][y]) ) {
+            data[x][y] = +data[x][y];
+
+            if (data[x][y] === 0) {
+              save[x][y] = null;
+            } else {
+              save[x][y] = new jsGameHacks.EditMode.template.gameStateTile(x, y, data[x][y]);
+            }
+          } else {
+            alert('Hey, "' + data[x][y] + '" is not a number!');
+            ok = false;
+            break;
+          }
+        }
+      }
+
+      if (ok) {
+        console.log(gameState);
+//        localStorage.gameState = JSON.stringify(save);
+//        location.reload();
+      }
     },
 
     cancel: function () {
