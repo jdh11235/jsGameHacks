@@ -1,5 +1,6 @@
 /* global window */
 /* global document */
+/* global Node */
 /* global location */
 /* global setTimeout */
 
@@ -220,7 +221,13 @@ if (!jsGameHacks.EditMode) {
     },
 
     checkIsInsideGrid: function(e) {
-      if (!/inputTile-\d-\d/g.test(e.target.id.toString()) ) {
+      var gameContainer = document.getElementsByClassName('game-container')[0];
+      var isInsideContainer = gameContainer.contains(e.target);
+      var isInputTile = /inputTile-\d-\d/g.test(e.target.id);
+
+      if (isInsideContainer && !isInputTile) {
+        jsGameHacks.EditMode.getInputTile(1, 1).focus();
+      } else if (!isInputTile) {
         jsGameHacks.EditMode.cancel();
       }
     },
@@ -241,10 +248,22 @@ if (!jsGameHacks.EditMode) {
 
     messFixer: function () {
       window.addEventListener('keydown', jsGameHacks.EditMode.checkIsInsideGrid);
+      window.addEventListener('click', jsGameHacks.EditMode.checkIsInsideGrid);
       document.getElementById('inputTile-1-1').focus();
     },
 
-    open: function () {
+    polyfills: function() {
+      //element.contains
+      //source - http://www.quirksmode.org/blog/archives/2006/01/contains_for_mo.html
+      if (window.Node && Node.prototype && !Node.prototype.contains) {
+        Node.prototype.contains = function (arg) {
+          return !!(this.compareDocumentPosition(arg) & 16);
+        };
+      }
+    },
+
+    init: function () {
+      this.polyfills();
       this.attachInputs();
       this.attachActionBar();
       this.messFixer();
@@ -266,7 +285,7 @@ if (!jsGameHacks.EditMode) {
     }
   };
 
-  jsGameHacks.EditMode.open();
+  jsGameHacks.EditMode.init();
 } else {
   jsGameHacks.EditMode.cancel();
 }
