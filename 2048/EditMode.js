@@ -22,7 +22,7 @@ if (!jsGameHacks.EditMode) {
               [null, null, null, null]
             ]
           },
-          score: 0,
+          score: jsGameHacks.EditMode.getCurrentScore(),
           over: false,
           won: false,
           keepPlaying: false
@@ -160,6 +160,11 @@ if (!jsGameHacks.EditMode) {
       }
 
       return value;
+    },
+
+    getCurrentScore: function() {
+      var elm = document.getElementsByClassName('score-container')[0];
+      return +elm.innerHTML;
     },
 
     editHandler: function (e) {
@@ -353,3 +358,5 @@ if (!jsGameHacks.EditMode) {
 } else {
   jsGameHacks.EditMode.cancel();
 }
+
+//TODO: make score and bestScore editable
