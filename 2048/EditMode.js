@@ -1,6 +1,5 @@
 /* global window */
 /* global document */
-/* global Node */
 /* global location */
 /* global setTimeout */
 
@@ -12,6 +11,17 @@ if (!jsGameHacks.EditMode) {
   jsGameHacks.EditMode = {
     elm: {
       tileContainer: document.getElementsByClassName('tile-container')[0],
+
+      disabled_button: function() {
+        var elm = document.createElement('a');
+
+        elm.className = 'restart-button';
+        elm.innerHTML = 'New Game';
+        elm.style.backgroundColor = '#bbada0';
+        elm.style.cursor = 'not-allowed';
+
+        return elm;
+      },
 
       inputTile: function (x, y) {
         var elm = document.createElement('input');
@@ -221,19 +231,20 @@ if (!jsGameHacks.EditMode) {
       return data;
     },
 
-    checkIsInsideGrid: function(e) {
-      var gameContainer = document.getElementsByClassName('game-container')[0];
+    checkMessyClick: function(e) {
       var actionBar = document.getElementById('actionBar');
-
-      var isInsideContainer = gameContainer.contains(e.target);
       var isInsideActionBar = actionBar.contains(e.target);
       var isInputTile = /inputTile-\d-\d/g.test(e.target.id);
 
-      if (isInputTile || isInsideActionBar) {
-        //do nothing
-      } else if (isInsideContainer) {
+      if ( !(isInputTile || isInsideActionBar) ) {
         jsGameHacks.EditMode.getInputTile(1, 1).focus();
-      } else {
+      }
+    },
+
+    checkMessyKeypress: function(e) {
+      var isInputTile = /inputTile-\d-\d/g.test(e.target.id);
+
+      if (!isInputTile) {
         jsGameHacks.EditMode.cancel();
       }
     },
@@ -252,25 +263,20 @@ if (!jsGameHacks.EditMode) {
       new jsGameHacks.EditMode.elm.actionBar();
     },
 
-    messFixer: function () {
-      window.addEventListener('keydown', jsGameHacks.EditMode.checkIsInsideGrid);
-      window.addEventListener('click', jsGameHacks.EditMode.checkIsInsideGrid);
-      window.addEventListener('touchstart', jsGameHacks.EditMode.checkIsInsideGrid);
-      document.getElementById('inputTile-1-1').focus();
+    disableNewGameButton: function() {
+      var button = document.getElementsByClassName('restart-button')[0];
+      var disabled_button = new jsGameHacks.EditMode.elm.disabled_button();
+      button.parentNode.replaceChild(disabled_button, button);
     },
 
-    polyfills: function() {
-      //element.contains
-      //source - http://www.quirksmode.org/blog/archives/2006/01/contains_for_mo.html
-      if (window.Node && Node.prototype && !Node.prototype.contains) {
-        Node.prototype.contains = function (arg) {
-          return !!(this.compareDocumentPosition(arg) & 16);
-        };
-      }
+    messFixer: function () {
+      window.addEventListener('keydown', jsGameHacks.EditMode.checkMessyKeypress);
+      window.addEventListener('click', jsGameHacks.EditMode.checkMessyClick);
+      this.disableNewGameButton();
+      this.getInputTile(1, 1).focus();
     },
 
     init: function () {
-      this.polyfills();
       this.attachInputs();
       this.attachActionBar();
       this.messFixer();
