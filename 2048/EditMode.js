@@ -1,3 +1,4 @@
+/* global window */
 /* global document */
 /* global location */
 /* global setTimeout */
@@ -195,6 +196,12 @@ if (!jsGameHacks.EditMode) {
       }
     },
 
+    checkIsInsideGrid: function(e) {
+      if (!/tileInput-\d-\d/g.test(e.target.id.toString()) ) {
+        jsGameHacks.EditMode.cancel();
+      }
+    },
+
     attachInputs: function () {
       var container = jsGameHacks.EditMode.elm.tileContainer;
       for (var x = 1; x <= 4; x++) {
@@ -209,14 +216,15 @@ if (!jsGameHacks.EditMode) {
       new jsGameHacks.EditMode.elm.actionBar();
     },
 
-    gamePreventer: function () {
-      //redirect focus to tileInputs
+    messFixer: function () {
+      window.addEventListener('keydown', jsGameHacks.EditMode.checkIsInsideGrid);
+      document.getElementById('tileInput-1-1').focus();
     },
 
     open: function () {
       this.attachInputs();
       this.attachActionBar();
-      this.gamePreventer();
+      this.messFixer();
     },
 
     apply: function () {
