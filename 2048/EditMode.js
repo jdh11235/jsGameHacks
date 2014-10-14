@@ -12,9 +12,9 @@ if (!jsGameHacks.EditMode) {
     elm: {
       tileContainer: document.getElementsByClassName('tile-container')[0],
 
-      tileInput: function (x, y) {
+      inputTile: function (x, y) {
         var elm = document.createElement('input');
-        elm.id = 'tileInput-' + x + '-' + y;
+        elm.id = 'inputTile-' + x + '-' + y;
         elm.classList.add('tile');
         elm.classList.add('tile-position-' + x + '-' + y);
 
@@ -125,7 +125,7 @@ if (!jsGameHacks.EditMode) {
       var currentY = +currentID.substring(currentID.length - 1, currentID.length);
 
       function moveTo(x, y) {
-        var target = document.getElementById('tileInput-' + x + '-' + y);
+        var target = document.getElementById('inputTile-' + x + '-' + y);
         target.focus();
       }
 
@@ -197,7 +197,7 @@ if (!jsGameHacks.EditMode) {
     },
 
     checkIsInsideGrid: function(e) {
-      if (!/tileInput-\d-\d/g.test(e.target.id.toString()) ) {
+      if (!/inputTile-\d-\d/g.test(e.target.id.toString()) ) {
         jsGameHacks.EditMode.cancel();
       }
     },
@@ -206,8 +206,8 @@ if (!jsGameHacks.EditMode) {
       var container = jsGameHacks.EditMode.elm.tileContainer;
       for (var x = 1; x <= 4; x++) {
         for (var y = 1; y <= 4; y++) {
-          var tileInput = new jsGameHacks.EditMode.elm.tileInput(x, y);
-          container.appendChild(tileInput);
+          var inputTile = new jsGameHacks.EditMode.elm.inputTile(x, y);
+          container.appendChild(inputTile);
         }
       }
     },
@@ -218,7 +218,7 @@ if (!jsGameHacks.EditMode) {
 
     messFixer: function () {
       window.addEventListener('keydown', jsGameHacks.EditMode.checkIsInsideGrid);
-      document.getElementById('tileInput-1-1').focus();
+      document.getElementById('inputTile-1-1').focus();
     },
 
     open: function () {
@@ -228,7 +228,7 @@ if (!jsGameHacks.EditMode) {
     },
 
     apply: function () {
-      //collect data from tileInputs
+      //collect data from inputTiles
       //trim whitespace from data
       //if (validate data) else alert('Hey, ' + bad_data + ' is not a number!');
       //if (data == '') insert null
