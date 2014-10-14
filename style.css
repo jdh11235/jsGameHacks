@@ -43,7 +43,7 @@ body {
 }
 
 .category {
-  color: orange;
+  color: white;
 }
 
 .category a {
@@ -65,4 +65,8 @@ h2 {
 
 #header i {
   color: #8a2be2; /* Blue Purple */
+}
+
+.category b {
+  color: orange;
 }
