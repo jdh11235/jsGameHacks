@@ -95,6 +95,10 @@ if (!jsGameHacks.EditMode) {
       }
     },
 
+    getInputTile: function(x, y) {
+      return document.getElementById('inputTile-' + x + '-' + y);
+    },
+
     getCurrentTileValue: function (x, y) {
       var className = 'tile-position-' + x + '-' + y;
       var outer = document.getElementsByClassName(className)[0];
@@ -125,7 +129,7 @@ if (!jsGameHacks.EditMode) {
       var currentY = +currentID.substring(currentID.length - 1, currentID.length);
 
       function moveTo(x, y) {
-        var target = document.getElementById('inputTile-' + x + '-' + y);
+        var target = jsGameHacks.EditMode.getInputTile(x, y);
         target.focus();
       }
 
@@ -178,22 +182,41 @@ if (!jsGameHacks.EditMode) {
 
     validateElm: function(elm) {
       var text = elm.value;
+
       if (jsGameHacks.EditMode.validate(text)) {
-        console.log('good');
         jsGameHacks.EditMode.setElmStatus(elm, '');
       } else {
-        console.log('bad');
         jsGameHacks.EditMode.setElmStatus(elm, 'black');
       }
     },
 
     validate: function (text) {
       var num = +text;
+
       if (!isNaN(num)) {
         return true;
       } else {
         return false;
       }
+    },
+
+    collectData: function() {
+      var data = {};
+
+      for (var x = 1; x <= 4; x++) {
+        for (var y = 1; y <= 4; y++) {
+          var inputTile = new jsGameHacks.EditMode.getInputTile(x, y);
+
+          if (inputTile.placeholder) {
+            data[x + '_' + y] = inputTile.placeholder;
+          } else {
+            data[x + '_' + y] = inputTile.value;
+          }
+
+        }
+      }
+
+      return data;
     },
 
     checkIsInsideGrid: function(e) {
@@ -228,13 +251,14 @@ if (!jsGameHacks.EditMode) {
     },
 
     apply: function () {
-      //collect data from inputTiles
+      var data = jsGameHacks.EditMode.collectData();
+      console.log(data);
       //trim whitespace from data
       //if (validate data) else alert('Hey, ' + bad_data + ' is not a number!');
       //if (data == '') insert null
       //convert data to object in save format
       //localStorage.gameState = JSON.stringify(object);
-      location.reload();
+//      location.reload();
     },
 
     cancel: function () {
