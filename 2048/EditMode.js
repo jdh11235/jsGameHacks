@@ -207,7 +207,7 @@ if (!jsGameHacks.EditMode) {
         for (var y = 1; y <= 4; y++) {
           var inputTile = new jsGameHacks.EditMode.getInputTile(x, y);
 
-          if (inputTile.placeholder) {
+          if (!inputTile.value && inputTile.placeholder) {
             data[x + '_' + y] = inputTile.placeholder;
           } else {
             data[x + '_' + y] = inputTile.value;
