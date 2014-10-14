@@ -45,6 +45,12 @@ if (!jsGameHacks.EditMode) {
     },
 
     elm: {
+      checkboxOfDoom: function() {
+
+        //TODO: reset best score if checkbox is checked
+
+      },
+
       tileContainer: document.getElementsByClassName('tile-container')[0],
 
       disabled_button: function() {
@@ -105,7 +111,7 @@ if (!jsGameHacks.EditMode) {
         elm.style.height = '100%';
         elm.style.backgroundColor = '#f65e3b';
         elm.style.color = '#faf8ef';
-        elm.style.float = 'left';
+        elm.style.cssFloat = 'left';
 
         elm.addEventListener('click', jsGameHacks.EditMode.apply);
 
@@ -123,7 +129,7 @@ if (!jsGameHacks.EditMode) {
         elm.style.height = '100%';
         elm.style.backgroundColor = 'black';
         elm.style.color = '#faf8ef';
-        elm.style.float = 'left';
+        elm.style.cssFloat = 'left';
 
         elm.addEventListener('click', jsGameHacks.EditMode.cancel);
 
@@ -317,6 +323,7 @@ if (!jsGameHacks.EditMode) {
       this.attachInputs();
       this.attachActionBar();
       this.messFixer();
+      console.log('test');
     },
 
     apply: function () {
@@ -358,5 +365,3 @@ if (!jsGameHacks.EditMode) {
 } else {
   jsGameHacks.EditMode.cancel();
 }
-
-//TODO: make score and bestScore editable

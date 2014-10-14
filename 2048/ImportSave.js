@@ -52,8 +52,8 @@ if (!jsGameHacks.ImportSave) {
       this.elm_container.style.width = '100%';
       this.elm_container.style.height = '2em';
 
-      this.elm_cancel.style.float = "left";
-      this.elm_upload.style.float = "left";
+      this.elm_cancel.style.cssFloat = "left";
+      this.elm_upload.style.cssFloat = "left";
 
       this.elm_cancel.style.width = '38.2%';
       this.elm_upload.style.width = '61.8%';
