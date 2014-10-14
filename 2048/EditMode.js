@@ -2,6 +2,7 @@
 /* global document */
 /* global location */
 /* global setTimeout */
+/* global localStorage */
 
 if (!jsGameHacks) {
   var jsGameHacks = {};
@@ -69,6 +70,7 @@ if (!jsGameHacks.EditMode) {
         var currentValue = jsGameHacks.EditMode.getCurrentTileValue(x, y);
         if (currentValue) {
           elm.placeholder = currentValue;
+          elm.value = currentValue;
         }
 
         elm.addEventListener('keydown', jsGameHacks.EditMode.keyHandler);
@@ -254,13 +256,7 @@ if (!jsGameHacks.EditMode) {
       for (var x = 0; x <= 3; x++) {
         for (var y = 0; y <= 3; y++) {
           var inputTile = new jsGameHacks.EditMode.getInputTile(x, y);
-
-          if (!inputTile.value && inputTile.placeholder) {
-            data[x][y] = inputTile.placeholder;
-          } else {
-            data[x][y] = inputTile.value;
-          }
-
+          data[x][y] = inputTile.value;
         }
       }
 
@@ -343,9 +339,8 @@ if (!jsGameHacks.EditMode) {
       }
 
       if (ok) {
-        console.log(gameState);
-//        localStorage.gameState = JSON.stringify(save);
-//        location.reload();
+        localStorage.gameState = JSON.stringify(gameState);
+        location.reload();
       }
     },
 
