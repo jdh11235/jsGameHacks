@@ -45,13 +45,18 @@ if (!jsGameHacks.EditMode) {
     },
 
     elm: {
-      checkboxOfDoom: function() {
-
-        //TODO: reset best score if checkbox is checked
-
-      },
-
-      tileContainer: document.getElementsByClassName('tile-container')[0],
+//      checkboxOfDoom: function() {
+//        //TODO: reset best score if checkbox is checked
+//        var elm = document.createElement('input');
+//        elm.id = 'checkboxOfDoom';
+//        elm.type = 'checkbox';
+//        elm.name = 'dd';
+//        elm.value = 'ff';
+//        elm.checked = false;
+//        elm.autocomplete = 'off';
+//
+//        return elm;
+//      },
 
       disabled_button: function() {
         var elm = document.createElement('a');
@@ -69,6 +74,7 @@ if (!jsGameHacks.EditMode) {
         elm.id = 'inputTile-' + x + '-' + y;
         elm.classList.add('tile');
         elm.classList.add('tile-position-' + (x + 1) + '-' + (y + 1) );
+        elm.autocomplete = 'off';
 
         elm.style.cursor = 'text';
         elm.style.textAlign = 'center';
@@ -292,8 +298,8 @@ if (!jsGameHacks.EditMode) {
       }
     },
 
-    attachInputs: function () {
-      var container = jsGameHacks.EditMode.elm.tileContainer;
+    attachInputTiles: function () {
+      var container = document.getElementsByClassName('tile-container')[0];
       for (var x = 0; x <= 3; x++) {
         for (var y = 0; y <= 3; y++) {
           var inputTile = new jsGameHacks.EditMode.elm.inputTile(x, y);
@@ -301,6 +307,14 @@ if (!jsGameHacks.EditMode) {
         }
       }
     },
+
+//    attachScoreResetter: function() {
+//      var scoresContainer = document.getElementsByClassName('scores-container')[0];
+//      var bestContainer = document.getElementsByClassName('best-container')[0];
+//      var checkboxOfDoom = new jsGameHacks.EditMode.elm.checkboxOfDoom();
+//
+//      scoresContainer.replaceChild(checkboxOfDoom, bestContainer);
+//    },
 
     attachActionBar: function () {
       new jsGameHacks.EditMode.elm.actionBar();
@@ -320,13 +334,14 @@ if (!jsGameHacks.EditMode) {
     },
 
     init: function () {
-      this.attachInputs();
+      this.attachInputTiles();
+//      this.attachScoreResetter();
       this.attachActionBar();
       this.messFixer();
-      console.log('test');
     },
 
     apply: function () {
+//      var doom = document.getElementById('checkboxOfDoom').value;
       var data = jsGameHacks.EditMode.collectData();
       var gameState = new jsGameHacks.EditMode.template.gameState();
       var save = gameState.grid.cells;
@@ -351,6 +366,9 @@ if (!jsGameHacks.EditMode) {
       }
 
       if (ok) {
+//        if (doom) {
+//          localStorage.bestScore = doom;
+//        }
         localStorage.gameState = JSON.stringify(gameState);
         location.reload();
       }
