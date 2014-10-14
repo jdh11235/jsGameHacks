@@ -183,7 +183,8 @@ var util = {
 
   regenBoxes: function() {
     util.updateSrc();
-    util.updateInstall();
+//    util.updateInstall();
+    //removed mobile marklets due to Mobile Safari not bypassing cache with ?update
   },
 
   init: function() {
