@@ -87,8 +87,8 @@ if (!jsGameHacks.EditMode) {
         var cancel = new jsGameHacks.EditMode.elm.actionBar_cancel();
 
         document.body.appendChild(container);
-        container.appendChild(apply);
         container.appendChild(cancel);
+        container.appendChild(apply);
 
         return container;
       }

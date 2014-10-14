@@ -78,8 +78,8 @@ if (!jsGameHacks.ImportSave) {
       this.elm_upload.addEventListener('change', jsGameHacks.ImportSave.handleFile);
 
       document.body.appendChild(this.elm_container);
-      this.elm_container.appendChild(this.elm_upload);
       this.elm_container.appendChild(this.elm_cancel);
+      this.elm_container.appendChild(this.elm_upload);
     },
 
     cancel: function() {
