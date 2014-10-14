@@ -36,6 +36,7 @@ if (!jsGameHacks.EditMode) {
 
       actionBar_container: function () {
         var elm = document.createElement('div');
+        elm.id = 'actionBar';
 
         elm.style.position = 'fixed';
         elm.style.width = '100%';
@@ -222,12 +223,17 @@ if (!jsGameHacks.EditMode) {
 
     checkIsInsideGrid: function(e) {
       var gameContainer = document.getElementsByClassName('game-container')[0];
+      var actionBar = document.getElementById('actionBar');
+
       var isInsideContainer = gameContainer.contains(e.target);
+      var isInsideActionBar = actionBar.contains(e.target);
       var isInputTile = /inputTile-\d-\d/g.test(e.target.id);
 
-      if (isInsideContainer && !isInputTile) {
+      if (isInputTile || isInsideActionBar) {
+        //do nothing
+      } else if (isInsideContainer) {
         jsGameHacks.EditMode.getInputTile(1, 1).focus();
-      } else if (!isInputTile) {
+      } else {
         jsGameHacks.EditMode.cancel();
       }
     },
@@ -249,6 +255,7 @@ if (!jsGameHacks.EditMode) {
     messFixer: function () {
       window.addEventListener('keydown', jsGameHacks.EditMode.checkIsInsideGrid);
       window.addEventListener('click', jsGameHacks.EditMode.checkIsInsideGrid);
+      window.addEventListener('touchstart', jsGameHacks.EditMode.checkIsInsideGrid);
       document.getElementById('inputTile-1-1').focus();
     },
 
